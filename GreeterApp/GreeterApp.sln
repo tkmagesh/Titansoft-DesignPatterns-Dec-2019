@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29123.88
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GreeterApp", "GreeterApp.csproj", "{BF75EAB2-F216-425B-B381-18398605B191}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Greeter_Tests", "..\Greeter_Tests\Greeter_Tests.csproj", "{A1657A06-B760-4353-B129-E5B822225E71}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BF75EAB2-F216-425B-B381-18398605B191}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BF75EAB2-F216-425B-B381-18398605B191}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BF75EAB2-F216-425B-B381-18398605B191}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BF75EAB2-F216-425B-B381-18398605B191}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A1657A06-B760-4353-B129-E5B822225E71}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1657A06-B760-4353-B129-E5B822225E71}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1657A06-B760-4353-B129-E5B822225E71}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1657A06-B760-4353-B129-E5B822225E71}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {04DA6F54-681E-4ECC-8EC4-754D03A32D49}
+	EndGlobalSection
+EndGlobal
