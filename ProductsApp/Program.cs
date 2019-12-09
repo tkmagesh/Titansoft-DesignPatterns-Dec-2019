@@ -26,12 +26,91 @@ namespace ProductsApp
                 Console.WriteLine(product);
             }
             */
+            Console.WriteLine("Default List");
             foreach (var product in products)
             {
                 Console.WriteLine(product);
             }
 
+            Console.WriteLine("After Default Sort [By Id]");
+            products.Sort(new ProductComparerById());
+            foreach (var product in products)
+            {
+                Console.WriteLine(product);
+            }
+
+            Console.WriteLine("Sort by Name");
+            products.Sort(new ProductComparerByName());
+            foreach (var product in products)
+            {
+                Console.WriteLine(product);
+            }
+
+            Console.WriteLine("Sort by Units");
+            products.Sort(new ProductComparerByUnits());
+            foreach (var product in products)
+            {
+                Console.WriteLine(product);
+            }
+
+            Console.WriteLine("Sort by Cost");
+            /*
+            products.Sort(new CompareProductDelegate(Program.CompareProductByCost));
+            foreach (var product in products)
+            {
+                Console.WriteLine(product);
+            }
+            */
+
+            /*
+            products.Sort(delegate (Product p1, Product p2)
+            {
+                if (p1.Cost < p2.Cost) return -1;
+                if (p1.Cost > p2.Cost) return 1;
+                return 0;
+            });
+            */
+            products.Sort( ( p1,  p2) =>
+            {
+                if (p1.Cost < p2.Cost) return -1;
+                if (p1.Cost > p2.Cost) return 1;
+                return 0;
+            });
+            foreach (var product in products)
+            {
+                Console.WriteLine(product);
+            }
+
+            Console.WriteLine("Costly Products [cost >= 40]");
+            var costlyProducts = products.Filter(new CostProductSpecification(40));
+            foreach (var product in costlyProducts)
+            {
+                Console.WriteLine(product);
+            }
+
+            Console.WriteLine("Stationary Product");
+            var stationaryProducts = products.Filter(new CategoryProductSpecification("Stationary"));
+            foreach (var product in stationaryProducts)
+            {
+                Console.WriteLine(product);
+            }
+
+            Console.WriteLine("Costly Or Stationary Product");
+            var combinedProductSpecification = new OrSpecification(new CostProductSpecification(40), new CategoryProductSpecification("Stationary"));
+            var combinedProductFilterResult = products.Filter(combinedProductSpecification);
+            foreach (var product in combinedProductFilterResult)
+            {
+                Console.WriteLine(product);
+            }
+
             Console.ReadLine();
+        }
+
+        public static int CompareProductByCost(Product p1, Product p2)
+        {
+            if (p1.Cost < p2.Cost) return -1;
+            if (p1.Cost > p2.Cost) return 1;
+            return 0;
         }
     }
 
@@ -75,11 +154,172 @@ namespace ProductsApp
             return (Product)_list[index];
         }
 
-       
+
 
         public IEnumerator GetEnumerator()
         {
             return new ProductsEnumerator(this._list);
+        }
+
+        public void Sort(IProductComparer comparer)
+        {
+            for (int i = 0; i < this._list.Count - 1; i++)
+            {
+                for (int j = i + 1; j < this._list.Count; j++)
+                {
+                    var p1 = (Product)this._list[i];
+                    var p2 = (Product)this._list[j];
+                    var compareResult = comparer.Compare(p1, p2);
+                    if (compareResult > 0)
+                    {
+                        var temp = this._list[i];
+                        this._list[i] = this._list[j];
+                        this._list[j] = temp;
+                    }
+               
+                }
+            }
+        }
+
+        public void Sort(CompareProductDelegate compareProduct)
+        {
+            for (int i = 0; i < this._list.Count - 1; i++)
+            {
+                for (int j = i + 1; j < this._list.Count; j++)
+                {
+                    var p1 = (Product)this._list[i];
+                    var p2 = (Product)this._list[j];
+                    var compareResult = compareProduct(p1, p2);
+                    if (compareResult > 0)
+                    {
+                        var temp = this._list[i];
+                        this._list[i] = this._list[j];
+                        this._list[j] = temp;
+                    }
+
+                }
+            }
+        }
+
+        public ProductsCollection FilterCostlyProducts()
+        {
+            var result = new ProductsCollection();
+            for (int i = 0; i < this._list.Count; i++)
+            {
+                var product = (Product)this._list[i];
+                if (product.Cost >= 50)
+                {
+                    result.Add(product);
+                }
+            }
+            return result;
+        }
+
+        public ProductsCollection Filter(IProductSpecification specification)
+        {
+            var result = new ProductsCollection();
+            for (int i = 0; i < this._list.Count; i++)
+            {
+                var product = (Product)this._list[i];
+                if (specification.isSatisfiedBy(product))
+                {
+                    result.Add(product);
+                }
+            }
+            return result;
+        }
+
+    }
+
+    public interface IProductSpecification
+    {
+        bool isSatisfiedBy(Product product);
+    }
+
+    public class CostProductSpecification : IProductSpecification
+    {
+        private readonly decimal cost;
+
+        public CostProductSpecification(decimal cost)
+        {
+            this.cost = cost;
+        }
+        public bool isSatisfiedBy(Product product)
+        {
+            return product.Cost >= this.cost;
+        }
+    }
+
+    public class CategoryProductSpecification : IProductSpecification
+    {
+        private readonly string categoryName;
+
+        public CategoryProductSpecification(string categoryName)
+        {
+            this.categoryName = categoryName;
+        }
+       
+    
+
+        bool IProductSpecification.isSatisfiedBy(Product product)
+        {
+            return product.Category == this.categoryName;
+        }
+    }
+
+    public class OrSpecification : IProductSpecification
+    {
+        private readonly IProductSpecification leftSpecification;
+        private readonly IProductSpecification rightSpecification;
+
+        public OrSpecification(IProductSpecification leftSpecification, IProductSpecification rightSpecification)
+        {
+            this.leftSpecification = leftSpecification;
+            this.rightSpecification = rightSpecification;
+        }
+
+        public bool isSatisfiedBy(Product product)
+        {
+            return leftSpecification.isSatisfiedBy(product) || rightSpecification.isSatisfiedBy(product);
+        }
+    }
+
+    public interface IProductComparer
+    {
+        int Compare(Product p1, Product p2);
+    }
+
+    public delegate int CompareProductDelegate(Product p1, Product p2);
+
+    public class ProductComparerById : IProductComparer
+    {
+        public int Compare(Product p1, Product p2)
+        {
+            if (p1.Id < p2.Id) return -1;
+            if (p1.Id > p2.Id) return 1;
+            return 0;
+        }
+    }
+
+    public class ProductComparerByName : IProductComparer
+    {
+        public ProductComparerByName()
+        {
+        }
+
+        public int Compare(Product p1, Product p2)
+        {
+            return p1.Name.CompareTo(p2.Name);
+        }
+    }
+
+    public class ProductComparerByUnits : IProductComparer
+    {
+        public int Compare(Product p1, Product p2)
+        {
+            if (p1.Units < p2.Units) return -1;
+            if (p1.Units > p2.Units) return 1;
+            return 0;
         }
     }
 
