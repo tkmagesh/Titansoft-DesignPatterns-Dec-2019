@@ -2,6 +2,6 @@
 {
     public interface IProductComparer
     {
-        int Compare(Product p1, Product p2);
+        int Compare(IProduct p1, IProduct p2);
     }
 }

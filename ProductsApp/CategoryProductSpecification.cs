@@ -11,7 +11,7 @@
        
     
 
-        bool IProductSpecification.isSatisfiedBy(Product product)
+        bool IProductSpecification.isSatisfiedBy(IProduct product)
         {
             return product.Category == this.categoryName;
         }

@@ -2,6 +2,7 @@
 
 namespace ProductsApp
 {
+
     partial class Program
     {
         static void Main(string[] args)
@@ -12,6 +13,10 @@ namespace ProductsApp
             products.Add(new Product { Id = 1, Name = "Ten", Cost = 20, Units = 50, Category = "Utencil" });
             products.Add(new Product { Id = 5, Name = "Den", Cost = 80, Units = 10, Category = "Stationary" });
             products.Add(new Product { Id = 4, Name = "Zen", Cost = 60, Units = 40, Category = "Utencil" });
+
+            var book1 = new Book { BookId = 9, Title = "Design Patterns", Price = 100, Units = 3 };
+            products.Add(new BookProduct(book1));
+
             /*
             for (int index = 0, count = products.Count; index < count; index++)
             {
@@ -106,7 +111,7 @@ namespace ProductsApp
             Console.ReadLine();
         }
 
-        public static int CompareProductByCost(Product p1, Product p2)
+        public static int CompareProductByCost(IProduct p1, IProduct p2)
         {
             if (p1.Cost < p2.Cost) return -1;
             if (p1.Cost > p2.Cost) return 1;
@@ -114,5 +119,5 @@ namespace ProductsApp
         }
     }
 
-    public delegate int CompareProductDelegate(Product p1, Product p2);
+    public delegate int CompareProductDelegate(IProduct p1, IProduct p2);
 }

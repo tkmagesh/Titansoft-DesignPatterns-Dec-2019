@@ -11,7 +11,7 @@
             this.rightSpecification = rightSpecification;
         }
 
-        public bool isSatisfiedBy(Product product)
+        public bool isSatisfiedBy(IProduct product)
         {
             return leftSpecification.isSatisfiedBy(product) || rightSpecification.isSatisfiedBy(product);
         }

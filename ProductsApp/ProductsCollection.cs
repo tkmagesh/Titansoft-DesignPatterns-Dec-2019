@@ -6,7 +6,7 @@ namespace ProductsApp
     {
         private ArrayList _list = new ArrayList();
 
-        public void Add(Product product)
+        public void Add(IProduct product)
         {
             this._list.Add(product);
         }
@@ -21,9 +21,9 @@ namespace ProductsApp
 
 
 
-        public Product GetByIndex(int index)
+        public IProduct GetByIndex(int index)
         {
-            return (Product)_list[index];
+            return (IProduct)_list[index];
         }
 
 
@@ -39,8 +39,8 @@ namespace ProductsApp
             {
                 for (int j = i + 1; j < this._list.Count; j++)
                 {
-                    var p1 = (Product)this._list[i];
-                    var p2 = (Product)this._list[j];
+                    var p1 = (IProduct)this._list[i];
+                    var p2 = (IProduct)this._list[j];
                     var compareResult = comparer.Compare(p1, p2);
                     if (compareResult > 0)
                     {
@@ -59,8 +59,8 @@ namespace ProductsApp
             {
                 for (int j = i + 1; j < this._list.Count; j++)
                 {
-                    var p1 = (Product)this._list[i];
-                    var p2 = (Product)this._list[j];
+                    var p1 = (IProduct)this._list[i];
+                    var p2 = (IProduct)this._list[j];
                     var compareResult = compareProduct(p1, p2);
                     if (compareResult > 0)
                     {
@@ -78,7 +78,7 @@ namespace ProductsApp
             var result = new ProductsCollection();
             for (int i = 0; i < this._list.Count; i++)
             {
-                var product = (Product)this._list[i];
+                var product = (IProduct)this._list[i];
                 if (product.Cost >= 50)
                 {
                     result.Add(product);
@@ -92,7 +92,7 @@ namespace ProductsApp
             var result = new ProductsCollection();
             for (int i = 0; i < this._list.Count; i++)
             {
-                var product = (Product)this._list[i];
+                var product = (IProduct)this._list[i];
                 if (specification.isSatisfiedBy(product))
                 {
                     result.Add(product);

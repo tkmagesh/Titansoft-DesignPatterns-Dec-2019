@@ -8,7 +8,7 @@
         {
             this.cost = cost;
         }
-        public bool isSatisfiedBy(Product product)
+        public bool isSatisfiedBy(IProduct product)
         {
             return product.Cost >= this.cost;
         }

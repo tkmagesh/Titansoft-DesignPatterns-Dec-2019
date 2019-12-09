@@ -9,16 +9,17 @@
                 switch (comparerEnum)
                 {
                     case ProductComparerEnum.Id:
-                        return new ProductComparerById()
-                        break;
+                        return new ProductComparerById();
+                        
                     case ProductComparerEnum.Units:
                         return new ProductComparerByUnits();
-                        break;
+                        
+
                     case ProductComparerEnum.Name:
                         return new ProductComparerByName();
-                        break;
+                        
                     default:
-                        break;
+                        return new ProductComparerById();
                 }
             }
         }

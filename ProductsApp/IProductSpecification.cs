@@ -2,6 +2,6 @@
 {
     public interface IProductSpecification
     {
-        bool isSatisfiedBy(Product product);
+        bool isSatisfiedBy(IProduct product);
     }
 }

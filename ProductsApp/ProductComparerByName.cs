@@ -6,7 +6,7 @@
         {
         }
 
-        public int Compare(Product p1, Product p2)
+        public int Compare(IProduct p1, IProduct p2)
         {
             return p1.Name.CompareTo(p2.Name);
         }
