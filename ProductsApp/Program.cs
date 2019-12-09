@@ -106,6 +106,33 @@ namespace ProductsApp
             Console.ReadLine();
         }
 
+        public enum ProductComparerEnum
+        {
+            Id,
+            Units,
+            Name
+        }
+        public class ProductComparerFactory
+        {
+            public static IProductComparer Create(ProductComparerEnum comparerEnum)
+            {
+                switch (comparerEnum)
+                {
+                    case ProductComparerEnum.Id:
+                        return new ProductComparerById()
+                        break;
+                    case ProductComparerEnum.Units:
+                        return new ProductComparerByUnits();
+                        break;
+                    case ProductComparerEnum.Name:
+                        return new ProductComparerByName();
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+
         public static int CompareProductByCost(Product p1, Product p2)
         {
             if (p1.Cost < p2.Cost) return -1;
@@ -281,6 +308,23 @@ namespace ProductsApp
         public bool isSatisfiedBy(Product product)
         {
             return leftSpecification.isSatisfiedBy(product) || rightSpecification.isSatisfiedBy(product);
+        }
+    }
+
+    public class AndSpecification : IProductSpecification
+    {
+        private readonly IProductSpecification leftSpecification;
+        private readonly IProductSpecification rightSpecification;
+
+        public AndSpecification(IProductSpecification leftSpecification, IProductSpecification rightSpecification)
+        {
+            this.leftSpecification = leftSpecification;
+            this.rightSpecification = rightSpecification;
+        }
+
+        public bool isSatisfiedBy(Product product)
+        {
+            return leftSpecification.isSatisfiedBy(product) && rightSpecification.isSatisfiedBy(product);
         }
     }
 
