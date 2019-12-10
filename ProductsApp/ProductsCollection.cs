@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace ProductsApp
 {
@@ -6,9 +8,22 @@ namespace ProductsApp
     {
         private ArrayList _list = new ArrayList();
 
+        //private IList<IObserver<ProductsCollection>> _observers = new List<IObserver<ProductsCollection>>();
+
+        public delegate void OnListChangeDelegate(ProductsCollection productsCollection);
+
+        public OnListChangeDelegate OnListChange;
+
+        private void NotifyObservers()
+        {
+            this.OnListChange?.Invoke(this);
+        }
+
+        
         public void Add(IProduct product)
         {
             this._list.Add(product);
+            this.NotifyObservers();
         }
 
         public int Count
@@ -51,6 +66,7 @@ namespace ProductsApp
                
                 }
             }
+            this.NotifyObservers();
         }
 
         public void Sort(CompareProductDelegate compareProduct)
@@ -71,6 +87,7 @@ namespace ProductsApp
 
                 }
             }
+            this.NotifyObservers();
         }
 
         public ProductsCollection FilterCostlyProducts()
