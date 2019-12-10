@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
 
 namespace ProductsApp
 {
@@ -10,13 +8,16 @@ namespace ProductsApp
 
         //private IList<IObserver<ProductsCollection>> _observers = new List<IObserver<ProductsCollection>>();
 
-        public delegate void OnListChangeDelegate(ProductsCollection productsCollection);
+        private PubSub _pubsub = PubSub.GetInstance();
 
-        public OnListChangeDelegate OnListChange;
+        //public delegate void OnListChangeDelegate(ProductsCollection productsCollection);
+
+        //public OnListChangeDelegate OnListChange;
 
         private void NotifyObservers()
         {
-            this.OnListChange?.Invoke(this);
+            //this.OnListChange?.Invoke(this);
+            this._pubsub.Publish("listChanged");
         }
 
         

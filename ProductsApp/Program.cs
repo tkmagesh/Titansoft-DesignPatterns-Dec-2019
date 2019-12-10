@@ -7,10 +7,16 @@ namespace ProductsApp
     {
         static void Main(string[] args)
         {
+
+           
+      
             var products = new ProductsCollection();
             var logger = new ProductsLogger();
             //products.Subscribe(logger);
-            products.OnListChange += PrintProducts;
+            //products.OnListChange += PrintProducts;
+
+            var pubSubInstance = PubSub.GetInstance();
+            pubSubInstance.Subscribe("listChanged", Program.PrintProducts);
 
             products.Add(new Product { Id = 3, Name = "Pen", Cost = 10, Units = 60, Category = "Stationary" });
             products.Add(new Product { Id = 2, Name = "Ken", Cost = 40, Units = 30, Category = "Stationary" });
@@ -109,13 +115,15 @@ namespace ProductsApp
             return 0;
         }
 
-        public static void PrintProducts(ProductsCollection data)
+        public static void PrintProducts()
         {
-            Console.WriteLine("The current product list is :");
-            foreach (var product in data)
-            {
-                Console.WriteLine(product);
-            }
+            //Console.WriteLine("The current product list is :");
+            //foreach (var product in data)
+            //{
+            //    Console.WriteLine(product);
+            //}
+
+            Console.WriteLine("The product list changed");
         }
     }
 
